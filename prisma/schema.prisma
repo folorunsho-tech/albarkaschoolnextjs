@@ -1,0 +1,301 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model accounts {
+  id          String        @id
+  name        String?
+  username    String?
+  passHash    String?
+  role        String        @default("user")
+  permissions Json?
+  active      Boolean?      @default(true)
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+  updatedById String?
+  subjects    subjects[]
+  Students    students[]
+  FCAResults  fcaresults[]
+  SCAResults  scaresults[]
+  ExamResults examresults[]
+
+  StudentsDemotions studentsdemotions[]
+
+  StudentsPromotions studentspromotions[]
+
+  Disengagedstudent disengagedstudent[]
+  Transactions      transaction[]
+
+  Reciepts reciept[]
+  Payments payment[]
+}
+
+model students {
+  id                 String    @id
+  admission_no       String?   @unique
+  first_name         String?
+  last_name          String?
+  date_of_birth      DateTime?
+  sex                String?
+  address            String?
+  state_of_origin    String?
+  school_section     String?
+  lga                String?
+  religion           String?
+  date_of_admission  DateTime?
+  admission_session  String?
+  admission_term     String?
+  admission_class    String?
+  active             Boolean   @default(true)
+  guardian_name      String?
+  guardian_telephone String?
+  curr_class_id      String?
+  curr_class         classes?  @relation(fields: [curr_class_id], references: [id])
+  createdById        String?
+  createdBy          accounts? @relation(fields: [createdById], references: [id])
+  updatedById        String?
+  updatedAt          DateTime  @updatedAt
+
+  transactions transaction[]
+  FCAResults   fcaresults[]
+  SCAResults   scaresults[]
+  ExamResults  examresults[]
+
+  StudentsPromotions studentspromotions[]
+
+  StudentsDemotions studentsdemotions[]
+
+  Disengagedstudent disengagedstudent[]
+
+  ClassHistory classhistory[]
+}
+
+model disengagedstudent {
+  id                      String    @id @default(cuid())
+  student_id              String?
+  student                 students? @relation(fields: [student_id], references: [id])
+  session                 String?
+  term                    String?
+  date_of_disengagement   DateTime? @default(now())
+  method_of_disengagement String?
+  reason                  String?
+  comment                 String?
+  createdById             String?
+  createdBy               accounts? @relation(fields: [createdById], references: [id])
+}
+
+model classhistory {
+  id         String    @id @default(uuid())
+  student_id String?
+  session    String?
+  student    students? @relation(fields: [student_id], references: [id])
+  class_id   String?
+  class      classes?  @relation(fields: [class_id], references: [id])
+}
+
+model fcaresults {
+  id          String    @id
+  student_id  String?
+  student     students? @relation(fields: [student_id], references: [id])
+  class_id    String?
+  class       classes?  @relation(fields: [class_id], references: [id])
+  subject_id  String?
+  subject     subjects? @relation(fields: [subject_id], references: [id])
+  score       Int?
+  session     String?
+  term        String?
+  createdById String?
+  createdBy   accounts? @relation(fields: [createdById], references: [id])
+  updatedById String?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+model scaresults {
+  id          String    @id
+  student_id  String?
+  student     students? @relation(fields: [student_id], references: [id])
+  class_id    String?
+  class       classes?  @relation(fields: [class_id], references: [id])
+  subject_id  String?
+  subject     subjects? @relation(fields: [subject_id], references: [id])
+  score       Int?
+  session     String?
+  term        String?
+  createdById String?
+  createdBy   accounts? @relation(fields: [createdById], references: [id])
+  updatedById String?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+model examresults {
+  id          String    @id
+  student_id  String?
+  student     students? @relation(fields: [student_id], references: [id])
+  class_id    String?
+  class       classes?  @relation(fields: [class_id], references: [id])
+  subject_id  String?
+  subject     subjects? @relation(fields: [subject_id], references: [id])
+  score       Int?
+  session     String?
+  term        String?
+  createdById String?
+  createdBy   accounts? @relation(fields: [createdById], references: [id])
+  updatedById String?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+model transaction {
+  id          String    @id
+  items       tnxitem[]
+  total       Int
+  balance     Int
+  year        Int
+  month       String
+  class       String?
+  session     String?
+  term        String?
+  status      String
+  createdById String?
+  updatedById String?
+  updatedBy   accounts? @relation(fields: [updatedById], references: [id])
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  studentId   String?
+  student     students? @relation(fields: [studentId], references: [id])
+  reciepts    reciept[]
+  payments    payment[]
+}
+
+model tnxitem {
+  id            String      @id @default(uuid())
+  transactionId String
+  transaction   transaction @relation(fields: [transactionId], references: [id])
+  feeId         String
+  fee           feesgroup   @relation(fields: [feeId], references: [id])
+  price         Int
+  paid          Int
+  balance       Int
+  class         String?
+  session       String?
+  term          String?
+  active        Boolean     @default(true)
+  year          Int?
+  month         String?
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+  payments      payment[]
+}
+
+model payment {
+  id          String       @id @default(uuid())
+  tnxId       String?
+  transaction transaction? @relation(fields: [tnxId], references: [id])
+  itemId      String
+  tnxItem     tnxitem      @relation(fields: [itemId], references: [id])
+  name        String
+  paid        Int
+  method      String?
+  class       String?
+  session     String?
+  term        String?
+  createdById String?
+  createdBy   accounts?    @relation(fields: [createdById], references: [id])
+  type        String       @default("payment")
+  year        Int?
+  month       String?
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+}
+
+model reciept {
+  id          String      @id
+  items       Json
+  tnxId       String
+  transaction transaction @relation(fields: [tnxId], references: [id])
+  year        Int
+  month       String
+  status      String
+  createdById String?
+  createdBy   accounts?   @relation(fields: [createdById], references: [id])
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+}
+
+model studentspromotions {
+  id          String    @id
+  student_id  String
+  student     students  @relation(fields: [student_id], references: [id])
+  from        String?
+  term        String?
+  session     String?
+  to_id       String
+  to          classes   @relation(fields: [to_id], references: [id])
+  createdById String?
+  createdBy   accounts? @relation(fields: [createdById], references: [id])
+  promotedOn  DateTime? @default(now())
+}
+
+model studentsdemotions {
+  id          String    @id
+  student_id  String
+  student     students  @relation(fields: [student_id], references: [id])
+  from        String?
+  term        String?
+  session     String?
+  to_id       String
+  to          classes   @relation(fields: [to_id], references: [id])
+  createdById String?
+  createdBy   accounts? @relation(fields: [createdById], references: [id])
+  demotedOn   DateTime? @default(now())
+}
+
+model classes {
+  id                 String               @id
+  name               String?
+  school_section     String?
+  subjects           subjects[]
+  Students           students[]
+  FCAResults         fcaresults[]
+  SCAResults         scaresults[]
+  ExamResults        examresults[]
+  fees               feesgroup[]
+  StudentsPromotions studentspromotions[]
+
+  StudentsDemotions studentsdemotions[]
+
+  ClassHistory classhistory[]
+}
+
+model subjects {
+  id       String     @id
+  name     String?
+  accounts accounts[]
+  Classes  classes[]
+
+  FCAResults  fcaresults[]
+  SCAResults  scaresults[]
+  ExamResults examresults[]
+}
+
+model feesgroup {
+  id      String    @id
+  name    String?
+  amount  String?
+  classes classes[]
+  tnxItem tnxitem[]
+}

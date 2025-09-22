@@ -1,0 +1,67 @@
+@import "tailwindcss";
+.print{
+	@apply m-2
+}
+.printable {
+	@apply border-collapse w-full text-sm text-left contain-layout;
+}
+.printable th {
+	@apply  border border-black bg-gray-200 capitalize;
+}
+.printable tbody tr {
+	@apply  border border-black;
+}
+.printable tbody td {
+	@apply  border border-black;
+}
+  .printable td {
+    border: 1px solid black;
+    text-align: left;
+    padding: 8px;
+  }
+  .prints{
+    @apply border-2 border-black m-2
+  }
+/* .printable {
+  border-collapse: collapse;
+  width: 100%;
+  text-align: left;
+  font-size: small;
+  padding: 2rem;
+  border: 1px solid black;
+} */
+/* .printable tr:nth-child(odd) {
+    background-color: #efefef;
+  } */
+  /* .printable > thead th {
+    border: 1px solid black;
+    text-align: left;
+    padding: 8px;
+    background-color: #efefef;
+  }
+  .printable td {
+    border: 1px solid black;
+    text-align: left;
+    padding: 8px;
+  } */
+.recieptable{
+  border-collapse: collapse;
+  width: 100%;
+  text-align: left;
+  font-size: small;
+  padding: 2rem;
+  border: 1px solid black;
+}
+.recieptable > thead th {
+  border: 1px solid black;
+  text-align: left;
+  padding: 8px;
+  background-color: #efefef;
+}
+.recieptable td {
+  border: 1px solid black;
+  padding: 8px;
+}
+.recieptable tfoot {
+  background-color: #efefef;
+}
