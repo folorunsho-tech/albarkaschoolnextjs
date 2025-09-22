@@ -10,6 +10,7 @@ FROM base AS builder
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
+RUN npx prisma generate
 ENV NEXT_TELEMETRY_DISABLED=1
 # ✅ Pass env at build time
 RUN npm run build
@@ -23,15 +24,15 @@ ENV NEXT_TELEMETRY_DISABLED=1
 
 
 # Copy build artifacts
-COPY --from=builder /app/node_modules ./node_modules
-COPY --from=builder /app/.next ./.next
-COPY --from=builder /app/public ./public
-COPY package.json ./
+# COPY --from=builder /app/node_modules ./node_modules
+# COPY --from=builder /app/.next ./.next
+# COPY --from=builder /app/public ./public
+# COPY package.json ./
 
 # Standalone nextjs server
-# COPY --from=builder /app/public ./public
-# COPY --from=builder /app/.next/standalone ./
-# COPY --from=builder /app/.next/static ./.next/static
+COPY --from=builder /app/public ./public
+COPY --from=builder /app/.next/standalone ./
+COPY --from=builder /app/.next/static ./.next/static
 # COPY --from=builder /app/generated/ ./generated/
 
 # Coolify provides PORT
