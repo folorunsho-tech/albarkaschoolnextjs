@@ -38,4 +38,5 @@ COPY --from=builder /app/.next/static ./.next/static
 # Coolify provides PORT
 ENV PORT=3000
 EXPOSE 3000
-CMD ["npm", "run", "start"]
+# CMD ["npm", "run", "start"]
+CMD ["node", "server.js"]
