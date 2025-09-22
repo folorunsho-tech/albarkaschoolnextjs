@@ -13,7 +13,7 @@ export async function POST(request: NextRequest) {
 				username,
 			},
 		});
-		const compared = await bcrypt.compare(password, user?.passHash);
+		const compared = await bcrypt.compare(password, user?.passHash ?? "");
 		if (!user?.active && !compared) {
 			return NextResponse.json(
 				{ error: "Invalid credentials" },
@@ -21,18 +21,18 @@ export async function POST(request: NextRequest) {
 			);
 		} else {
 			const token = await generateToken({
-				userId: user.id,
-				menu: user.permissions,
-				role: user.role,
-				active: user.active,
-				username: user.username,
+				userId: user?.id,
+				menu: user?.permissions,
+				role: user?.role,
+				active: user?.active,
+				username: user?.username,
 			});
 			const res = NextResponse.json({
-				userId: user.id,
-				menu: user.permissions,
-				role: user.role,
-				active: user.active,
-				username: user.username,
+				userId: user?.id,
+				menu: user?.permissions,
+				role: user?.role,
+				active: user?.active,
+				username: user?.username,
 			});
 			res.cookies.set("token", token, { httpOnly: true, path: "/" });
 

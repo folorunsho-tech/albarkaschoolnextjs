@@ -2,11 +2,7 @@ import prisma from "@/config/prisma";
 import bcrypt from "bcrypt";
 export async function POST(
 	request: Request,
-	{
-		params,
-	}: {
-		params: Promise<{ accountId: string }>;
-	}
+	{ params }: { params: Promise<{ accountId: string }> }
 ) {
 	const accountId = (await params).accountId;
 
