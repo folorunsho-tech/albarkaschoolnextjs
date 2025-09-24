@@ -16,11 +16,11 @@ const getGrade = (total: number, curr_class: string) => {
 			return "Pass-D7";
 		} else if (total >= 40 && total <= 44) {
 			return "Pass-E8";
-		} else {
+		} else if (total >= 0 && total <= 39) {
 			return "Fail-F9";
 		}
 	}
-	return "";
+	return "-";
 };
 
 export default getGrade;

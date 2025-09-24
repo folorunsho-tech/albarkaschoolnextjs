@@ -10,15 +10,10 @@ import getGrade from "@/libs/getGrade";
 
 const Statement = () => {
 	const { fetch } = useFetch();
-	const { post, loading } = usePostNormal();
+	const { post } = usePostNormal();
 	const [perc, setPerc] = React.useState<number>(0);
 	const [statement, setStatement] = React.useState<any>("");
 	const [selectedClass, setSelectedClass] = React.useState<string>("");
-	const [currClass, setCurrClass] = React.useState<{
-		id: string;
-		name: string;
-		school_section: string;
-	} | null>(null);
 	const [resumption, setResumption] = React.useState<any | null>(null);
 	const [selectedStudent, setSelectedStudent] = React.useState<string | null>(
 		null
@@ -31,9 +26,6 @@ const Statement = () => {
 	} | null>(null);
 	const [classList, setClasslist] = React.useState<
 		{ value: string; label: string }[]
-	>([]);
-	const [classes, setClasses] = React.useState<
-		{ id: string; name: string; school_section: string }[]
 	>([]);
 	const [classHistory, setClassHistory] = React.useState([]);
 	const [classHist, setClassHist] = React.useState([]);
@@ -53,14 +45,6 @@ const Statement = () => {
 					label: cl?.name,
 				};
 			});
-			const sortedClassess: any = data?.map((cl: any) => {
-				return {
-					id: cl?.id,
-					name: cl?.name,
-					school_section: cl?.school_section,
-				};
-			});
-			setClasses(sortedClassess);
 			setClasslist(sortedClass);
 		}
 		getData();
@@ -83,7 +67,7 @@ const Statement = () => {
 			{
 				session,
 				term,
-				classId: currClass?.id,
+				classId: selectedClass,
 			}
 		);
 		``;
@@ -103,21 +87,24 @@ const Statement = () => {
 			generated.push({
 				id: sub?.id,
 				name: sub?.name,
-				fca: fca?.score || "-",
-				sca: sca?.score || "-",
-				exam: exam?.score || "-",
+				fca: fca?.score || null,
+				sca: sca?.score || null,
+				exam: exam?.score || null,
 				total:
-					Number(fca?.score) + Number(sca?.score) + Number(exam?.score) || "-",
+					Number(fca?.score) + Number(sca?.score) + Number(exam?.score) || null,
 				grade: getGrade(
 					Number(fca?.score) + Number(sca?.score) + Number(exam?.score),
-					currClass?.name || ""
+					data?.className || ""
 				),
 			});
 		});
 		setStatement({
 			name: `${student?.last_name} ${student?.first_name}`,
-
+			term: data?.term,
+			session: data?.session,
 			admission_no: student?.admission_no,
+			className: data?.className,
+			school_section: data?.school_section,
 			generated: generated.sort((a, b) =>
 				a?.name?.toLowerCase() < b?.name?.toLowerCase() ? -1 : 1
 			),
@@ -125,7 +112,8 @@ const Statement = () => {
 		const total = generated?.reduce((prev: number, curr: { total: number }) => {
 			return Number(prev) + Number(curr.total);
 		}, 0);
-		const calculated = ((total / (subs.length * 100)) * 100).toFixed(2);
+		const validSubs = generated?.filter((sub) => sub.total !== null);
+		const calculated = ((total / (validSubs.length * 100)) * 100).toFixed(2);
 		setPerc(calculated !== "NaN" ? parseFloat(calculated) : 0);
 		setDocName(data?.admission_no);
 	};
@@ -139,12 +127,18 @@ const Statement = () => {
 		const sortedHistory: any = data?.map(({ student }: any, index: number) => {
 			return {
 				value: `${student?.id}?${index}`,
-				label: `${student?.admission_no} - ${student?.first_name} ${student?.last_name}`,
+				label: `${student?.admission_no} - ${student?.last_name} ${student?.first_name} `,
 			};
 		});
 		setClassHist(data);
 		setClassHistory(sortedHistory);
 	};
+
+	React.useEffect(() => {
+		if (selectedClass) {
+			getClassHistory(selectedClass);
+		}
+	}, [selectedClass, session, term]);
 	return (
 		<section className='space-y-2 p-2 px-4 pb-3 bg-white h-screen relative'>
 			<header className='flex font-bold justify-between w-full'>
@@ -195,18 +189,8 @@ const Statement = () => {
 					value={selectedClass}
 					nothingFoundMessage='Nothing found...'
 					onChange={(value) => {
-						const foundClass: any = classes.find(
-							(cl: { id: string; name: string; school_section: string }) =>
-								cl.id === value
-						);
-						setCurrClass({
-							id: foundClass?.id,
-							name: foundClass?.name,
-							school_section: foundClass?.school_section,
-						});
-						setSelectedClass(value ?? "");
 						setSelectedStudent(null);
-						getClassHistory(value);
+						setSelectedClass(value || "");
 					}}
 				/>
 				<Select
@@ -246,9 +230,6 @@ const Statement = () => {
 			)}
 			{shown == "result" && (
 				<Result
-					session={session}
-					term={term}
-					selectedClass={currClass}
 					selectedStudent={selectedStudent}
 					statement={statement}
 					resumption={resumption}
@@ -256,8 +237,6 @@ const Statement = () => {
 					docName={docName}
 				/>
 			)}
-
-			<LoadingOverlay visible={loading} />
 		</section>
 	);
 };

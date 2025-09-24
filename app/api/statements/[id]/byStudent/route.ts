@@ -12,7 +12,7 @@ export async function POST(
 			where: {
 				id: classId,
 			},
-			select: {
+			include: {
 				subjects: true,
 			},
 		});
@@ -87,7 +87,14 @@ export async function POST(
 			},
 		});
 		return new Response(
-			JSON.stringify({ results, subjects: studentClass?.subjects }),
+			JSON.stringify({
+				results,
+				subjects: studentClass?.subjects,
+				session,
+				term,
+				className: studentClass?.name,
+				school_section: studentClass?.school_section,
+			}),
 			{
 				status: 200,
 				headers: { "Content-Type": "application/json" },

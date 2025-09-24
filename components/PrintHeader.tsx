@@ -9,7 +9,7 @@ const PrintHeader = ({ showDate = true }) => {
 					{new Date().toLocaleDateString()}
 				</p>
 			)}
-			<div className='flex justify-center w-full items-start py-4 text-center'>
+			<div className='flex justify-center w-full items-start py-2 text-center'>
 				<img
 					src='/logo.png'
 					alt='albarkaschool-logo'

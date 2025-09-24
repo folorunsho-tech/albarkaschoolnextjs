@@ -29,3 +29,11 @@ export async function generateToken(payload: JWTPayload) {
 
 	return token;
 }
+export async function decodeToken(token: string) {
+	try {
+		const { payload } = await jwtVerify(token, secret);
+		return payload;
+	} catch (error) {
+		return null;
+	}
+}

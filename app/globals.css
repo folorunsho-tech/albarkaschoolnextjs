@@ -20,7 +20,7 @@
     padding: 8px;
   }
   .prints{
-    @apply border-2 border-black m-2
+    @apply border-2 border-black m-1
   }
 /* .printable {
   border-collapse: collapse;
