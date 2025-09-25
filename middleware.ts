@@ -11,7 +11,7 @@ export async function middleware(req: NextRequest) {
 	if (PUBLIC_PATHS.some((path) => pathname.startsWith(path))) {
 		return NextResponse.next();
 	}
-	const token = req.cookies.get("token")?.value;
+	const token = req.cookies.get("albarkaschooltoken")?.value;
 	if (!token) return NextResponse.redirect(new URL("/login", req.url));
 	try {
 		await verifyToken(req);

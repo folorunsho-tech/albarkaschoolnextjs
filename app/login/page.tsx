@@ -24,15 +24,15 @@ export default function Login() {
 		const res = await post("/auth/login", {
 			...values,
 		});
-		setUser(res.data);
-		setPerm(res.data?.menu);
-		if (res?.status == 200) {
+		setUser(res?.data);
+		setPerm(res?.data?.menu);
+		if (res.status == 200) {
 			notifications.show({
 				id: "AuthLogin",
 				withCloseButton: false,
 				// position: "top-left",
 				onClose: () => {
-					router.push(`/ms`);
+					router.push("/ms");
 				},
 				autoClose: 500,
 				withBorder: true,

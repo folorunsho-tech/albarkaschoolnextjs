@@ -1,13 +1,14 @@
+import "./globals.css";
 import "@mantine/core/styles.css";
 import "@mantine/dates/styles.css";
 import { MantineProvider } from "@mantine/core";
 import { ModalsProvider } from "@mantine/modals";
 import { Notifications } from "@mantine/notifications";
 import { DatesProvider } from "@mantine/dates";
-import "./globals.css";
 import dayjs from "dayjs";
 import customParseFormat from "dayjs/plugin/customParseFormat";
 import { Metadata } from "next";
+import { UserProvider } from "@/context/User";
 
 export const metadata: Metadata = {
 	title: "Albarka SMS",
@@ -26,7 +27,7 @@ export default function RootLayout({
 					<Notifications autoClose={3000} className='absolute top-0 left-1' />
 					<ModalsProvider>
 						<DatesProvider settings={{ consistentWeeks: true }}>
-							{children}
+							<UserProvider>{children}</UserProvider>
 						</DatesProvider>
 					</ModalsProvider>
 				</MantineProvider>

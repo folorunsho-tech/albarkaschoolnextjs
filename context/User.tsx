@@ -20,12 +20,12 @@ const UserProvider = ({ children }: { children: ReactNode }) => {
 	const [user, setUser] = useState<any>(null);
 	const [permissions, setPerm] = useState<any[]>([]);
 	const getData = async () => {
-		const user: any = await getUser("token");
-		if (user) {
+		const user: any = await getUser("albarkaschooltoken");
+		if (!user) {
+			router.push("/login");
+		} else {
 			setUser(user);
 			setPerm(user?.menu);
-		} else {
-			router.push("/login");
 		}
 	};
 	useEffect(() => {

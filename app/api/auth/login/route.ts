@@ -34,7 +34,10 @@ export async function POST(request: NextRequest) {
 				active: user?.active,
 				username: user?.username,
 			});
-			res.cookies.set("token", token, { httpOnly: true, path: "/" });
+			res.cookies.set("albarkaschooltoken", token, {
+				httpOnly: true,
+				path: "/",
+			});
 
 			return res;
 		}
