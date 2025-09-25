@@ -3,7 +3,7 @@ import { NextResponse, type NextRequest } from "next/server";
 const secret = new TextEncoder().encode(process.env.JWT_SECRET); // must be a string
 
 export async function verifyToken(req: NextRequest) {
-	const token = req.cookies.get("token")?.value;
+	const token = req.cookies.get("albarkaschooltoken")?.value;
 	if (!token)
 		return new NextResponse(JSON.stringify({ error: "Access denied" }), {
 			status: 401,
