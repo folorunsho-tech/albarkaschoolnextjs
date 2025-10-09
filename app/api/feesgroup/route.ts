@@ -19,10 +19,7 @@ export async function GET(request: Request) {
 	}
 }
 
-export async function POST(
-	request: Request,
-	{ params }: { params: Promise<{ id: string }> }
-) {
+export async function POST(request: Request) {
 	// Parse the request body
 	const body = await request.json();
 	const { name, amount, classes } = body;
