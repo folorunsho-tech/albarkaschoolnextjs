@@ -56,7 +56,7 @@ const Payments = () => {
 				{row?.transaction?.student?.first_name}
 			</Table.Td>
 			<Table.Td>
-				<NumberFormatter prefix='NGN ' value={row?.paid} thousandSeparator />
+				<NumberFormatter prefix='N ' value={row?.paid} thousandSeparator />
 			</Table.Td>
 			<Table.Td>{row?.method}</Table.Td>
 			<Table.Td>{row?.type}</Table.Td>
@@ -282,18 +282,9 @@ const Payments = () => {
 	useEffect(() => {
 		const getD = async () => {
 			const { data } = await fetch("/feesgroup");
-			const section = (id: string, name: string) => {
-				if (id == "Exo4omu") {
-					return `${name} - Secondary`;
-				}
-				if (id == "JsrykwV") {
-					return `${name} - Nursery/Primary`;
-				}
-				return name;
-			};
 			const sorted = data.map((d: { name: string; id: string }) => {
 				return {
-					label: section(d.id, d.name),
+					label: d.name,
 					value: d.id,
 				};
 			});
@@ -305,12 +296,12 @@ const Payments = () => {
 		setSortedData(queryData);
 		setCriteria(null);
 		setValue(null);
-	}, [loaded]);
+	}, [loading]);
 	return (
 		<main className='space-y-6 bg-white p-3'>
 			<div className='flex justify-between items-end'>
 				<DataLoader
-					link='/payments'
+					link='/transactions/report/payments'
 					post={post}
 					setQueryData={setQueryData}
 					setLoaded={setLoaded}
@@ -368,11 +359,7 @@ const Payments = () => {
 						<Table.Td></Table.Td>
 						<Table.Td></Table.Td>
 						<Table.Td>
-							<NumberFormatter
-								prefix='NGN '
-								value={totalPay}
-								thousandSeparator
-							/>
+							<NumberFormatter prefix='N ' value={totalPay} thousandSeparator />
 						</Table.Td>
 						<Table.Td></Table.Td>
 						<Table.Td></Table.Td>

@@ -1,27 +1,24 @@
 import prisma from "@/config/prisma";
-
-export async function GET(
-	request: Request,
-	{ params }: { params: Promise<{ id: string }> }
-) {
-	const id = (await params).id;
+export async function POST(request: Request) {
+	// Parse the request body
+	const body = await request.json();
+	const { session } = body;
 	try {
-		const found = await prisma.transaction.findUnique({
+		const found = await prisma.payment.findMany({
 			where: {
-				id,
+				session,
 			},
 			include: {
-				items: {
+				tnxItem: true,
+				createdBy: true,
+				transaction: {
 					include: {
-						fee: true,
+						student: true,
 					},
 				},
-				student: true,
-				updatedBy: {
-					select: {
-						username: true,
-					},
-				},
+			},
+			orderBy: {
+				createdAt: "desc",
 			},
 		});
 		return new Response(JSON.stringify(found), {

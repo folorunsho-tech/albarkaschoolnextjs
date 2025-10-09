@@ -13,6 +13,9 @@ export async function middleware(req: NextRequest) {
 	}
 	const token = req.cookies.get("albarkaschooltoken")?.value;
 	if (!token) return NextResponse.redirect(new URL("/login", req.url));
+	if (pathname.endsWith("/") && token) {
+		return NextResponse.redirect(new URL("/ms", req.url));
+	}
 	try {
 		await verifyToken(req);
 		return NextResponse.next();

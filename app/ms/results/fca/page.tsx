@@ -89,16 +89,9 @@ const Fca = () => {
 			>
 				<div>
 					<Button
-						leftSection={
-							<IconArrowNarrowLeft
-								size={25}
-								onClick={() => {
-									router.back();
-								}}
-							/>
-						}
+						leftSection={<IconArrowNarrowLeft size={25} />}
 						onClick={() => {
-							router.back();
+							router.push("/ms/results");
 						}}
 					>
 						Go back
@@ -279,7 +272,7 @@ const Fca = () => {
 						<div className='flex items-end gap-6'>
 							<Button
 								onClick={() => {
-									router.back();
+									router.push("/ms/results");
 								}}
 								color='black'
 							>

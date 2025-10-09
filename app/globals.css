@@ -3,7 +3,7 @@
 	@apply m-2
 }
 .printable {
-	@apply border-collapse w-full text-sm text-left contain-layout;
+	@apply border-collapse w-full text-left contain-layout;
 }
 .printable th {
 	@apply  border border-black bg-gray-200 capitalize;
@@ -20,7 +20,7 @@
     padding: 8px;
   }
   .prints{
-    @apply border-2 border-black m-1
+    @apply border-2 border-black
   }
 /* .printable {
   border-collapse: collapse;

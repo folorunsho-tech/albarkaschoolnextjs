@@ -17,10 +17,10 @@ const DataLoader = ({
 	loadCriteria?: string;
 	setLoaded?: any;
 }) => {
-	const [session, setSession] = React.useState<string | null>(currSession);
-	const [Asession, setASession] = React.useState<string | null>(currSession);
-	const [term, setTerm] = React.useState<string | null | undefined>(currTerm);
-	const [criteria, setCriteria] = React.useState<string | null>(loadCriteria);
+	const [session, setSession] = React.useState<any>(currSession);
+	const [Asession, setASession] = React.useState<any>(currSession);
+	const [term, setTerm] = React.useState<any>(currTerm);
+	const [criteria, setCriteria] = React.useState<any>(loadCriteria);
 
 	const getData = async () => {
 		if (criteria == "Session and Term") {
@@ -100,7 +100,7 @@ const DataLoader = ({
 							data={["1st term", "2nd term", "3rd term"]}
 							allowDeselect={false}
 							value={term}
-							label='Session'
+							label='Term'
 							placeholder='Select a term'
 							onChange={(value: any) => {
 								setTerm(value);

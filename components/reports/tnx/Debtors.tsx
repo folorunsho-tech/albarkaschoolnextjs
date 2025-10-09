@@ -35,13 +35,13 @@ const Debtors = () => {
 			</Table.Td>
 			<Table.Td>{row?.fee?.name}</Table.Td>
 			<Table.Td>
-				<NumberFormatter prefix='NGN ' value={row?.price} thousandSeparator />
+				<NumberFormatter prefix='N ' value={row?.price} thousandSeparator />
 			</Table.Td>
 			<Table.Td>
-				<NumberFormatter prefix='NGN ' value={row?.paid} thousandSeparator />
+				<NumberFormatter prefix='N ' value={row?.paid} thousandSeparator />
 			</Table.Td>
 			<Table.Td>
-				<NumberFormatter prefix='NGN ' value={row?.balance} thousandSeparator />
+				<NumberFormatter prefix='N ' value={row?.balance} thousandSeparator />
 			</Table.Td>
 		</Table.Tr>
 	));
@@ -56,13 +56,13 @@ const Debtors = () => {
 			</Table.Td>
 			<Table.Td>{row?.fee?.name}</Table.Td>
 			<Table.Td>
-				<NumberFormatter prefix='NGN ' value={row?.price} thousandSeparator />
+				<NumberFormatter prefix='N ' value={row?.price} thousandSeparator />
 			</Table.Td>
 			<Table.Td>
-				<NumberFormatter prefix='NGN ' value={row?.paid} thousandSeparator />
+				<NumberFormatter prefix='N ' value={row?.paid} thousandSeparator />
 			</Table.Td>
 			<Table.Td>
-				<NumberFormatter prefix='NGN ' value={row?.balance} thousandSeparator />
+				<NumberFormatter prefix='N ' value={row?.balance} thousandSeparator />
 			</Table.Td>
 		</Table.Tr>
 	));
@@ -204,18 +204,9 @@ const Debtors = () => {
 	useEffect(() => {
 		const getD = async () => {
 			const { data } = await fetch("/feesgroup");
-			const section = (id: string, name: string) => {
-				if (id == "Exo4omu") {
-					return `${name} - Secondary`;
-				}
-				if (id == "JsrykwV") {
-					return `${name} - Nursery/Primary`;
-				}
-				return name;
-			};
 			const sorted = data.map((d: { name: string; id: string }) => {
 				return {
-					label: section(d.id, d.name),
+					label: d.name,
 					value: d.id,
 				};
 			});
@@ -227,12 +218,12 @@ const Debtors = () => {
 		setSortedData(queryData);
 		setCriteria(null);
 		setValue(null);
-	}, [loaded]);
+	}, [loading]);
 	return (
 		<main className='space-y-6'>
 			<div className='flex justify-between items-end'>
 				<DataLoader
-					link='/debtors'
+					link='/transactions/report/debtors'
 					post={post}
 					setQueryData={setQueryData}
 					setLoaded={setLoaded}
@@ -289,21 +280,17 @@ const Debtors = () => {
 						<Table.Td></Table.Td>
 						<Table.Td>
 							<NumberFormatter
-								prefix='NGN '
+								prefix='N '
 								value={totalPrice}
 								thousandSeparator
 							/>
 						</Table.Td>
 						<Table.Td>
-							<NumberFormatter
-								prefix='NGN '
-								value={totalPay}
-								thousandSeparator
-							/>
+							<NumberFormatter prefix='N ' value={totalPay} thousandSeparator />
 						</Table.Td>
 						<Table.Td>
 							<NumberFormatter
-								prefix='NGN '
+								prefix='N '
 								value={totalBalance}
 								thousandSeparator
 							/>

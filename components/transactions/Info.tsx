@@ -32,7 +32,7 @@ const Info = ({ tnx }: { tnx: any }) => {
 			<div className='printable text-sm'>
 				<div className='flex items-start gap-4 mb-1'>
 					<Image
-						src='/logo.png'
+						src='/logo.svg'
 						height={100}
 						width={100}
 						alt='Albarka logo'
@@ -40,13 +40,11 @@ const Info = ({ tnx }: { tnx: any }) => {
 					/>
 					<div className='space-y-1 w-full'>
 						<div className='flex items-center w-full justify-between'>
-							<h2 className='text-xl font-extrabold font-serif '>
-								AL-BARKA SCHOOL, WAWA
-							</h2>
-							<p>{format(new Date(), "PPPpp")}</p>
+							<h2 className='font-extrabold font-serif '>ALBARKA SCHOOL</h2>
+							<p>{format(new Date(), "Pp")}</p>
 						</div>
-						<h3 className='text-lg '>Rofia Road, Wawa, Niger State</h3>
-						<p className='text-md  italic'>E-mail: albarkaschool@yahoo.com</p>
+						<h3 className=''>Rofia Road, Wawa, Niger State</h3>
+						<p className=' italic'>E-mail: albarkaschool@yahoo.com</p>
 					</div>
 				</div>
 				<div className='flex flex-wrap gap-2 mb-1'>
@@ -78,7 +76,9 @@ const Info = ({ tnx }: { tnx: any }) => {
 					</div>
 					<div className='flex items-center'>
 						<h2 className='text-sm font-extrabold font-serif '>Address:</h2>
-						<p className='underline pl-1.5'>{tnx?.student?.address}</p>
+						<p className='underline pl-1.5'>
+							Albarka School, Wawa, Niger State
+						</p>
 					</div>
 
 					<div className='flex items-center '>
@@ -98,7 +98,7 @@ const Info = ({ tnx }: { tnx: any }) => {
 					<Table.Thead>
 						<Table.Tr>
 							<Table.Th>S/N</Table.Th>
-							<Table.Th>Name</Table.Th>
+							<Table.Th>Item</Table.Th>
 							<Table.Th>Amount</Table.Th>
 							<Table.Th>Paid</Table.Th>
 							<Table.Th>Balance</Table.Th>

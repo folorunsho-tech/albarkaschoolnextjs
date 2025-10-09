@@ -133,7 +133,7 @@ const page = () => {
 								name: item?.fee?.name,
 							};
 						});
-						await edit(`/transactions/reversal/${id}`, {
+						await edit(`/transactions/${id}/reversal`, {
 							status: status?.label,
 							toReverse,
 							curr_class: tnx?.class,

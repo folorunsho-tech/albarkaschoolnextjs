@@ -115,16 +115,9 @@ const Create = () => {
 		<section className='flex flex-col gap-4 relative p-3 bg-white'>
 			<div className='flex gap-10 items-center'>
 				<Button
-					leftSection={
-						<IconArrowNarrowLeft
-							size={25}
-							onClick={() => {
-								router.back();
-							}}
-						/>
-					}
+					leftSection={<IconArrowNarrowLeft size={25} />}
 					onClick={() => {
-						router.back();
+						router.push("/ms/accounts");
 					}}
 				>
 					Go back
@@ -338,7 +331,7 @@ const Create = () => {
 											});
 										}}
 									/>
-									<h3 className='text-sm font-semibold'>Payments</h3>
+									<h3 className='text-sm font-semibold'>Transactions</h3>
 								</span>
 
 								<span className='flex gap-2 ml-4'>
@@ -369,7 +362,7 @@ const Create = () => {
 				<div className='flex items-center gap-6 mt-5 '>
 					<Button
 						onClick={() => {
-							router.back();
+							router.push("/ms/accounts");
 						}}
 						color='black'
 					>

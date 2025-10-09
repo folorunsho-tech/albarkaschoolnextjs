@@ -37,16 +37,9 @@ const ViewStudent = () => {
 	return (
 		<section className='space-y-1 p-3 py-1'>
 			<Button
-				leftSection={
-					<IconArrowNarrowLeft
-						size={25}
-						onClick={() => {
-							router.back();
-						}}
-					/>
-				}
+				leftSection={<IconArrowNarrowLeft size={25} />}
 				onClick={() => {
-					router.back();
+					router.push("/ms/students");
 				}}
 			>
 				Go back

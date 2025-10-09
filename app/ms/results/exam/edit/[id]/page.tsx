@@ -31,16 +31,9 @@ const EditExam = () => {
 		>
 			<div className='flex flex-wrap gap-10 items-center '>
 				<Button
-					leftSection={
-						<IconArrowNarrowLeft
-							size={25}
-							onClick={() => {
-								router.back();
-							}}
-						/>
-					}
+					leftSection={<IconArrowNarrowLeft size={25} />}
 					onClick={() => {
-						router.back();
+						router.push("/ms/results");
 					}}
 				>
 					Go back
@@ -80,7 +73,7 @@ const EditExam = () => {
 				<Button
 					color='black'
 					onClick={() => {
-						router.back();
+						router.push("/ms/results");
 					}}
 				>
 					Cancel

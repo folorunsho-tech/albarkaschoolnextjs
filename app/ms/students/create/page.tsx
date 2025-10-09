@@ -75,16 +75,9 @@ const CreateStudent = () => {
 		<section className='space-y-6 bg-white p-4'>
 			<div className='flex flex-wrap gap-2 justify-between items-center'>
 				<Button
-					leftSection={
-						<IconArrowNarrowLeft
-							size={25}
-							onClick={() => {
-								router.back();
-							}}
-						/>
-					}
+					leftSection={<IconArrowNarrowLeft size={25} />}
 					onClick={() => {
-						router.back();
+						router.push("/ms/students");
 					}}
 				>
 					Go back
@@ -300,7 +293,7 @@ const CreateStudent = () => {
 					<Group>
 						<Button
 							onClick={() => {
-								router.back();
+								router.push("/ms/students");
 							}}
 						>
 							Cancel

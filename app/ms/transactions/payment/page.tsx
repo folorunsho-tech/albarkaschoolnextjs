@@ -132,10 +132,10 @@ const page = () => {
 		<main className='space-y-4 bg-white p-4'>
 			{reciept && (
 				<section style={{ display: "none" }}>
-					<div ref={contentRef} className='printable text-sm'>
+					<div ref={contentRef} className='printable text-xs'>
 						<div className='flex items-start gap-4 mb-1'>
 							<Image
-								src='/logo.png'
+								src='/logo.svg'
 								height={100}
 								width={100}
 								alt='Albarka logo'
@@ -143,56 +143,46 @@ const page = () => {
 							/>
 							<div className='space-y-1 w-full'>
 								<div className='flex items-center w-full justify-between'>
-									<h2 className='text-xl font-extrabold font-serif '>
-										AL-BARKA SCHOOL, WAWA
-									</h2>
-									<p>{format(new Date(), "PPPpp")}</p>
+									<h2 className='font-extrabold font-serif '>ALBARKA SCHOOL</h2>
+									<p>{format(new Date(), "Pp")}</p>
 								</div>
-								<h3 className='text-lg '>Rofia Road, Wawa, Niger State</h3>
-								<p className='text-md  italic'>
-									E-mail: albarkaschool@yahoo.com
-								</p>
+								<h3 className=''>Rofia Road, Wawa, Niger State</h3>
+								<p className=' italic'>E-mail: albarkaschool@yahoo.com</p>
 							</div>
 						</div>
 						<div className='flex flex-wrap gap-2 mb-1'>
 							<div className='flex items-center'>
-								<h2 className='text-sm font-extrabold font-serif '>
-									Receipt No:
-								</h2>
+								<h2 className='font-extrabold font-serif '>Receipt No:</h2>
 								<p className='underline pl-1.5'>{reciept?.id}</p>
 							</div>
 							<div className='flex items-center'>
-								<h2 className='text-sm font-extrabold font-serif '>
-									Tnx Date:
-								</h2>
+								<h2 className='font-extrabold font-serif '>Tnx Date:</h2>
 								<p className='underline pl-1.5'>
 									{format(new Date(reciept?.createdAt), "PPPpp")}
 								</p>
 							</div>
 							<div className='flex items-center'>
-								<h2 className='text-sm font-extrabold font-serif '>
-									Student name:
-								</h2>
+								<h2 className='font-extrabold font-serif '>Student name:</h2>
 								<p className='underline pl-1.5'>
 									{reciept?.transaction?.student?.last_name}{" "}
 									{reciept?.transaction?.student?.first_name}
 								</p>
 							</div>
 							<div className='flex items-center'>
-								<h2 className='text-sm font-extrabold font-serif '>Adm No:</h2>
+								<h2 className='font-extrabold font-serif '>Adm No:</h2>
 								<p className='underline pl-1.5'>
 									{reciept?.transaction?.student?.admission_no}
 								</p>
 							</div>
 							<div className='flex items-center'>
-								<h2 className='text-sm font-extrabold font-serif '>Address:</h2>
+								<h2 className='font-extrabold font-serif '>Address:</h2>
 								<p className='underline pl-1.5'>
-									{reciept?.transaction?.student?.address}
+									Albarka School, Wawa, Niger State
 								</p>
 							</div>
 
 							<div className='flex items-center '>
-								<h2 className='text-sm font-extrabold font-serif '>Cashier:</h2>
+								<h2 className='font-extrabold font-serif '>Cashier:</h2>
 								<p className='underline pl-1.5'>
 									{reciept?.createdBy?.username}
 								</p>
@@ -201,63 +191,55 @@ const page = () => {
 						<Table>
 							<Table.Thead>
 								<Table.Tr>
-									<Table.Th>S/N</Table.Th>
-									<Table.Th>Name</Table.Th>
+									<Table.Th>Item</Table.Th>
 									<Table.Th>Amount</Table.Th>
 									<Table.Th>Paid</Table.Th>
-									<Table.Th>Method</Table.Th>
 								</Table.Tr>
 							</Table.Thead>
 							<Table.Tbody>
 								{reciept?.items?.map((item: any, i: number) => (
 									<Table.Tr key={i + 1}>
-										<Table.Td>{i + 1}</Table.Td>
 										<Table.Td>{item?.name}</Table.Td>
 										<Table.Td>
 											<NumberFormatter
-												prefix='NGN '
+												prefix='N '
 												value={Number(item?.price)}
 												thousandSeparator
 											/>
 										</Table.Td>
 										<Table.Td>
 											<NumberFormatter
-												prefix='NGN '
+												prefix='N '
 												value={Number(item?.paid)}
 												thousandSeparator
 											/>
 										</Table.Td>
-										<Table.Td>{item?.method}</Table.Td>
 									</Table.Tr>
 								))}
 							</Table.Tbody>
 							<Table.Tfoot className='font-semibold border bg-gray-200'>
 								<Table.Tr>
-									<Table.Td></Table.Td>
 									<Table.Td>Total: </Table.Td>
 									<Table.Td>
 										<NumberFormatter
-											prefix='NGN '
+											prefix='N '
 											value={rAmount}
 											thousandSeparator
 										/>
 									</Table.Td>
 									<Table.Td>
 										<NumberFormatter
-											prefix='NGN '
+											prefix='N '
 											value={rPay}
 											thousandSeparator
 										/>
 									</Table.Td>
-									<Table.Td></Table.Td>
 								</Table.Tr>
 							</Table.Tfoot>
 						</Table>
 						<Text fw={600}>
 							Total amount paid in words:
-							<i className='text-sm pl-2 capitalize'>
-								{convert(Number(rPay))} Naira
-							</i>
+							<i className=' pl-2 capitalize'>{convert(Number(rPay))} Naira</i>
 						</Text>
 					</div>
 				</section>
@@ -286,7 +268,7 @@ const page = () => {
 			<form
 				onSubmit={async (e) => {
 					e.preventDefault();
-					const { data } = await post("/transactions/create", {
+					const { data } = await post("/transactions", {
 						total: totalPrice,
 						balance: totalBalance,
 						paid: totalPrice - totalBalance,
@@ -439,10 +421,9 @@ const page = () => {
 							<Table.Thead>
 								<Table.Tr>
 									<Table.Th>S/N</Table.Th>
-									<Table.Th>Name</Table.Th>
-									<Table.Th>Price</Table.Th>
+									<Table.Th>Item</Table.Th>
+									<Table.Th>Amount</Table.Th>
 									<Table.Th>Paid</Table.Th>
-									<Table.Th>Balance</Table.Th>
 									<Table.Th>Method</Table.Th>
 									<Table.Th></Table.Th>
 								</Table.Tr>
@@ -454,21 +435,21 @@ const page = () => {
 										<Table.Td>{item?.name}</Table.Td>
 										<Table.Td>
 											<NumberFormatter
-												prefix='NGN '
+												prefix='N '
 												value={Number(item?.price)}
 												thousandSeparator
 											/>
 										</Table.Td>
 										<Table.Td>
 											<NumberFormatter
-												prefix='NGN '
+												prefix='N '
 												value={Number(item?.paid)}
 												thousandSeparator
 											/>
 										</Table.Td>
 										<Table.Td>
 											<NumberFormatter
-												prefix='NGN '
+												prefix='N '
 												value={Number(item?.balance)}
 												thousandSeparator
 											/>
@@ -496,21 +477,21 @@ const page = () => {
 									<Table.Td>Total: </Table.Td>
 									<Table.Td>
 										<NumberFormatter
-											prefix='NGN '
+											prefix='N '
 											value={totalPrice}
 											thousandSeparator
 										/>
 									</Table.Td>
 									<Table.Td>
 										<NumberFormatter
-											prefix='NGN '
+											prefix='N '
 											value={totalPay}
 											thousandSeparator
 										/>
 									</Table.Td>
 									<Table.Td>
 										<NumberFormatter
-											prefix='NGN '
+											prefix='N '
 											value={totalBalance}
 											thousandSeparator
 										/>
@@ -553,21 +534,21 @@ const page = () => {
 							<Table.Td>{row?.fee?.name}</Table.Td>
 							<Table.Td>
 								<NumberFormatter
-									prefix='NGN '
+									prefix='N '
 									value={row?.price}
 									thousandSeparator
 								/>
 							</Table.Td>
 							<Table.Td>
 								<NumberFormatter
-									prefix='NGN '
+									prefix='N '
 									value={row?.paid}
 									thousandSeparator
 								/>
 							</Table.Td>
 							<Table.Td>
 								<NumberFormatter
-									prefix='NGN '
+									prefix='N '
 									value={row?.balance}
 									thousandSeparator
 								/>
@@ -583,7 +564,7 @@ const page = () => {
 										close();
 										setOutstanding([]);
 									}}
-									href={`/ms/transactions/balance?tnxId=${row?.transactionId}`}
+									href={`/ms/transactions/balance/${row?.transactionId}`}
 								>
 									Pay Balance
 								</Button>

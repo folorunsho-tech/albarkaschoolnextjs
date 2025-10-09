@@ -19,10 +19,8 @@ import { IconPencil, IconReceipt, IconX } from "@tabler/icons-react";
 import { format } from "date-fns";
 import Image from "next/image";
 import convert from "@/libs/numberConvert";
-import { useParams } from "next/navigation";
+import TnxSearch from "@/components/TnxSearch";
 const page = () => {
-	const { tnxId } = useParams<{ tnxId: string }>();
-
 	const { fetch, loading: Floading } = useFetch();
 	const { edit, loading } = useEdit();
 	const [reciept, setReciept] = useState<any | null>(null);
@@ -32,7 +30,10 @@ const page = () => {
 	} | null>(null);
 	const [method, setMethod] = useState<string | null>(null);
 	const [paid, setPaid] = useState<string | number>("");
-	const [id, setId] = useState(tnxId || "");
+	const [criteria, setCriteria] = useState<
+		"Reciept / Tnx No" | "Admission No" | null | string
+	>("Admission No");
+	const [id, setId] = useState("");
 	const [tnx, setTnx] = useState<any | null>(null);
 	const [item, setItem] = useState<any | null>(null);
 	const [items, setItems] = useState<
@@ -114,11 +115,6 @@ const page = () => {
 		getStatus(tnx?.status);
 	}, [tnx]);
 	useEffect(() => {
-		if (tnxId) {
-			loadTnx();
-		}
-	}, [tnxId]);
-	useEffect(() => {
 		if (totalPrice > 0 && totalPay < totalPrice) {
 			setStatus({
 				color: "orange",
@@ -138,10 +134,10 @@ const page = () => {
 		<main className='space-y-4 p-3 bg-white'>
 			{reciept && (
 				<section style={{ display: "none" }}>
-					<div ref={contentRef} className='printable text-sm'>
+					<div ref={contentRef} className='printable text-xs'>
 						<div className='flex items-start gap-4 mb-1'>
 							<Image
-								src='/logo.png'
+								src='/logo.svg'
 								height={100}
 								width={100}
 								alt='Albarka logo'
@@ -149,56 +145,46 @@ const page = () => {
 							/>
 							<div className='space-y-1 w-full'>
 								<div className='flex items-center w-full justify-between'>
-									<h2 className='text-xl font-extrabold font-serif '>
-										AL-BARKA SCHOOL, WAWA
-									</h2>
+									<h2 className='font-extrabold font-serif '>ALBARKA SCHOOL</h2>
 									<p>{format(new Date(), "PPPpp")}</p>
 								</div>
-								<h3 className='text-lg '>Rofia Road, Wawa, Niger State</h3>
-								<p className='text-md  italic'>
-									E-mail: albarkaschool@yahoo.com
-								</p>
+								<h3 className=''>Rofia Road, Wawa, Niger State</h3>
+								<p className=' italic'>E-mail: albarkaschool@yahoo.com</p>
 							</div>
 						</div>
 						<div className='flex flex-wrap gap-2 mb-1'>
 							<div className='flex items-center'>
-								<h2 className='text-sm font-extrabold font-serif '>
-									Receipt No:
-								</h2>
+								<h2 className='font-extrabold font-serif '>Receipt No:</h2>
 								<p className='underline pl-1.5'>{reciept?.id}</p>
 							</div>
 							<div className='flex items-center'>
-								<h2 className='text-sm font-extrabold font-serif '>
-									Tnx Date:
-								</h2>
+								<h2 className='font-extrabold font-serif '>Tnx Date:</h2>
 								<p className='underline pl-1.5'>
 									{format(new Date(reciept?.createdAt), "PPPpp")}
 								</p>
 							</div>
 							<div className='flex items-center'>
-								<h2 className='text-sm font-extrabold font-serif '>
-									Student name:
-								</h2>
+								<h2 className='font-extrabold font-serif '>Student name:</h2>
 								<p className='underline pl-1.5'>
 									{reciept?.transaction?.student?.last_name}{" "}
 									{reciept?.transaction?.student?.first_name}
 								</p>
 							</div>
 							<div className='flex items-center'>
-								<h2 className='text-sm font-extrabold font-serif '>Adm No:</h2>
+								<h2 className='font-extrabold font-serif '>Adm No:</h2>
 								<p className='underline pl-1.5'>
 									{reciept?.transaction?.student?.admission_no}
 								</p>
 							</div>
 							<div className='flex items-center'>
-								<h2 className='text-sm font-extrabold font-serif '>Address:</h2>
+								<h2 className='font-extrabold font-serif '>Address:</h2>
 								<p className='underline pl-1.5'>
-									{reciept?.transaction?.student?.address}
+									Albarka School, Wawa, Niger State
 								</p>
 							</div>
 
 							<div className='flex items-center '>
-								<h2 className='text-sm font-extrabold font-serif '>Cashier:</h2>
+								<h2 className='font-extrabold font-serif '>Cashier:</h2>
 								<p className='underline pl-1.5'>
 									{reciept?.createdBy?.username}
 								</p>
@@ -207,63 +193,55 @@ const page = () => {
 						<Table>
 							<Table.Thead>
 								<Table.Tr>
-									<Table.Th>S/N</Table.Th>
-									<Table.Th>Name</Table.Th>
+									<Table.Th>Item</Table.Th>
 									<Table.Th>Amount</Table.Th>
 									<Table.Th>Paid</Table.Th>
-									<Table.Th>Method</Table.Th>
 								</Table.Tr>
 							</Table.Thead>
 							<Table.Tbody>
 								{reciept?.items?.map((item: any, i: number) => (
 									<Table.Tr key={i + 1}>
-										<Table.Td>{i + 1}</Table.Td>
 										<Table.Td>{item?.name}</Table.Td>
 										<Table.Td>
 											<NumberFormatter
-												prefix='NGN '
+												prefix='N '
 												value={Number(item?.price)}
 												thousandSeparator
 											/>
 										</Table.Td>
 										<Table.Td>
 											<NumberFormatter
-												prefix='NGN '
+												prefix='N '
 												value={Number(item?.paid)}
 												thousandSeparator
 											/>
 										</Table.Td>
-										<Table.Td>{item?.method}</Table.Td>
 									</Table.Tr>
 								))}
 							</Table.Tbody>
 							<Table.Tfoot className='font-semibold border bg-gray-200'>
 								<Table.Tr>
-									<Table.Td></Table.Td>
 									<Table.Td>Total: </Table.Td>
 									<Table.Td>
 										<NumberFormatter
-											prefix='NGN '
+											prefix='N '
 											value={rAmount}
 											thousandSeparator
 										/>
 									</Table.Td>
 									<Table.Td>
 										<NumberFormatter
-											prefix='NGN '
+											prefix='N '
 											value={rPay}
 											thousandSeparator
 										/>
 									</Table.Td>
-									<Table.Td></Table.Td>
 								</Table.Tr>
 							</Table.Tfoot>
 						</Table>
 						<Text fw={600}>
 							Total amount paid in words:
-							<i className='text-sm pl-2 capitalize'>
-								{convert(Number(rPay))} Naira
-							</i>
+							<i className=' pl-2 capitalize'>{convert(Number(rPay))} Naira</i>
 						</Text>
 					</div>
 				</section>
@@ -286,27 +264,42 @@ const page = () => {
 				</div>
 			</header>
 			<section>
-				<div className='flex gap-2 items-end'>
-					<TextInput
-						label='Receipt No'
-						placeholder='load tnx by reciept no'
-						className='w-52'
-						rightSection={<Search size={20} />}
-						value={id}
-						onChange={(e) => {
-							setId(e.currentTarget.value);
+				<div className='flex gap-2 items-end w-full'>
+					<Select
+						label='Tnx search criteria'
+						placeholder='search criteria'
+						value={criteria}
+						data={["Reciept / Tnx No", "Admission No"]}
+						onChange={(value) => {
+							setTnx(null);
+							setCriteria(value);
 						}}
 					/>
-					<Button disabled={!id} onClick={loadTnx}>
-						load transaction
-					</Button>
+					{criteria == "Admission No" && <TnxSearch setTnx={setTnx} />}
+					{criteria == "Reciept / Tnx No" && (
+						<>
+							<TextInput
+								label='Receipt / Tnx No'
+								placeholder='load tnx by reciept no or tnx id'
+								className='w-64'
+								rightSection={<Search size={20} />}
+								value={id}
+								onChange={(e) => {
+									setId(e.currentTarget.value);
+								}}
+							/>
+							<Button disabled={!id} onClick={loadTnx}>
+								load transaction
+							</Button>
+						</>
+					)}
 				</div>
 				<>
 					<form
 						className='flex flex-wrap gap-2 items-end'
 						onSubmit={async (e) => {
 							e.preventDefault();
-							const { data } = await edit(`/transactions/balance/${id}`, {
+							const { data } = await edit(`/transactions/${id}/balance`, {
 								balance: itemBalance - totalPay,
 								status: status?.label,
 								items,
@@ -333,7 +326,7 @@ const page = () => {
 							placeholder='balance amount'
 							thousandSeparator
 							value={Number(item?.price) - Number(item?.paid)}
-							prefix='NGN '
+							prefix='N '
 							disabled
 							className='w-32'
 						/>
@@ -342,7 +335,7 @@ const page = () => {
 							placeholder='balance'
 							thousandSeparator
 							value={paid}
-							prefix='NGN '
+							prefix='N '
 							disabled={!item?.price}
 							min={0}
 							max={Number(item?.price) - Number(item?.paid)}
@@ -408,8 +401,8 @@ const page = () => {
 							<Table.Thead>
 								<Table.Tr>
 									<Table.Th>S/N</Table.Th>
-									<Table.Th>Name</Table.Th>
-									<Table.Th>Price</Table.Th>
+									<Table.Th>Item</Table.Th>
+									<Table.Th>Amount</Table.Th>
 									<Table.Th>Paid</Table.Th>
 									<Table.Th>Balance</Table.Th>
 									<Table.Th></Table.Th>
@@ -461,21 +454,21 @@ const page = () => {
 									<Table.Td>Total: </Table.Td>
 									<Table.Td>
 										<NumberFormatter
-											prefix='NGN '
+											prefix='N '
 											value={itemPrice}
 											thousandSeparator
 										/>
 									</Table.Td>
 									<Table.Td>
 										<NumberFormatter
-											prefix='NGN '
+											prefix='N '
 											value={itemPay}
 											thousandSeparator
 										/>
 									</Table.Td>
 									<Table.Td>
 										<NumberFormatter
-											prefix='NGN '
+											prefix='N '
 											value={itemBalance}
 											thousandSeparator
 										/>
@@ -489,7 +482,7 @@ const page = () => {
 							<Table.Thead>
 								<Table.Tr>
 									<Table.Th>S/N</Table.Th>
-									<Table.Th>Name</Table.Th>
+									<Table.Th>Item</Table.Th>
 									<Table.Th>Amount</Table.Th>
 									<Table.Th>Paid</Table.Th>
 									<Table.Th>Balance</Table.Th>
@@ -503,21 +496,21 @@ const page = () => {
 										<Table.Td>{item?.name}</Table.Td>
 										<Table.Td>
 											<NumberFormatter
-												prefix='NGN '
+												prefix='N '
 												value={Number(item?.price)}
 												thousandSeparator
 											/>
 										</Table.Td>
 										<Table.Td>
 											<NumberFormatter
-												prefix='NGN '
+												prefix='N '
 												value={Number(item?.paid)}
 												thousandSeparator
 											/>
 										</Table.Td>
 										<Table.Td>
 											<NumberFormatter
-												prefix='NGN '
+												prefix='N '
 												value={Number(item?.balance)}
 												thousandSeparator
 											/>
@@ -545,21 +538,21 @@ const page = () => {
 									<Table.Td>Total: </Table.Td>
 									<Table.Td>
 										<NumberFormatter
-											prefix='NGN '
+											prefix='N '
 											value={totalPrice}
 											thousandSeparator
 										/>
 									</Table.Td>
 									<Table.Td>
 										<NumberFormatter
-											prefix='NGN '
+											prefix='N '
 											value={totalPay}
 											thousandSeparator
 										/>
 									</Table.Td>
 									<Table.Td>
 										<NumberFormatter
-											prefix='NGN '
+											prefix='N '
 											value={totalBalance}
 											thousandSeparator
 										/>

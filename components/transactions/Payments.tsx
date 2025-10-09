@@ -32,7 +32,8 @@ const Payments = ({ id }: { id: string }) => {
 	));
 	useEffect(() => {
 		async function getAll() {
-			const { data } = await fetch(`/transactions/payments/${id}`);
+			const { data } = await fetch(`/transactions/${id}/payments`);
+
 			setQueryData(data);
 		}
 		getAll();

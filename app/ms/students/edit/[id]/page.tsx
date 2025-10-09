@@ -109,16 +109,9 @@ const EditStudent = () => {
 		<section className='space-y-6 bg-white p-4'>
 			<div className='flex justify-between items-center'>
 				<Button
-					leftSection={
-						<IconArrowNarrowLeft
-							size={25}
-							onClick={() => {
-								router.back();
-							}}
-						/>
-					}
+					leftSection={<IconArrowNarrowLeft size={25} />}
 					onClick={() => {
-						router.back();
+						router.push("/ms/students");
 					}}
 				>
 					Go back
@@ -327,7 +320,7 @@ const EditStudent = () => {
 				<Group>
 					<Button
 						onClick={() => {
-							router.back();
+							router.push("/ms/students");
 						}}
 					>
 						Cancel

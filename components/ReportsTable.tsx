@@ -3,7 +3,15 @@
 import { ReactElement, ReactNode, useEffect, useRef } from "react";
 import { useReactToPrint } from "react-to-print";
 
-import { ScrollArea, Table, Text, Box, Button, Loader } from "@mantine/core";
+import {
+	ScrollArea,
+	Table,
+	Text,
+	Box,
+	Button,
+	Loader,
+	LoadingOverlay,
+} from "@mantine/core";
 import { Printer } from "lucide-react";
 import { format } from "date-fns";
 import Image from "next/image";
@@ -62,7 +70,7 @@ const ReportsTable = ({
 				<div ref={contentRef} className='printable'>
 					<div className='flex items-start gap-4 mb-1'>
 						<Image
-							src='/logo.png'
+							src='/logo.svg'
 							height={100}
 							width={100}
 							alt='Albarka logo'
@@ -70,16 +78,11 @@ const ReportsTable = ({
 						/>
 						<div className='space-y-1 w-full'>
 							<div className='flex items-center w-full justify-between'>
-								<h2 className='text-xl font-extrabold font-serif '>
-									AL-BARKA SCHOOL, WAWA
-								</h2>
-								<p>{format(new Date(), "PPPpp")}</p>
+								<h2 className='font-extrabold font-serif '>ALBARKA SCHOOL</h2>
+								<p>{format(new Date(), "Pp")}</p>
 							</div>
-							<h3 className='text-lg '>Rofia Road, Wawa, Niger State</h3>
-							<p className='text-md  italic'>E-mail: albarkaschool@yahoo.com</p>
-							<p className='text-sm font-extrabold bg-black text-white p-1 px-2 text-center uppercase'>
-								{tableReport} - {loaded}
-							</p>
+							<h3 className=''>Rofia Road, Wawa, Niger State</h3>
+							<p className=' italic'>E-mail: albarkaschool@yahoo.com</p>
 						</div>
 					</div>
 					{metadata}
@@ -103,7 +106,6 @@ const ReportsTable = ({
 					{filters}
 					{showPrint && (
 						<Button
-							disabled={disableBtn}
 							onClick={() => {
 								reactToPrintFn();
 							}}
@@ -149,9 +151,7 @@ const ReportsTable = ({
 					</Table>
 				</ScrollArea>
 
-				<div className='flex items-center justify-center'>
-					{tableLoading && <Loader className='mx-auto' />}
-				</div>
+				<LoadingOverlay visible={tableLoading} />
 			</section>
 		</Box>
 	);

@@ -14,6 +14,7 @@ import {
 	IconArrowsTransferUpDown,
 	IconUserCheck,
 	IconFileInvoice,
+	IconCashRegister,
 } from "@tabler/icons-react";
 
 const NavMenu = () => {
@@ -45,12 +46,12 @@ const NavMenu = () => {
 			icon: IconFileInvoice,
 			shown: permissions?.statement,
 		},
-		// {
-		// 	link: "transactions",
-		// 	label: "Payments",
-		// 	icon: IconCashRegister,
-		// 	shown: permissions?.payments?.view,
-		// },
+		{
+			link: "transactions",
+			label: "Transactions",
+			icon: IconCashRegister,
+			shown: permissions?.payments?.view,
+		},
 		{
 			link: "classes",
 			label: "Classes",

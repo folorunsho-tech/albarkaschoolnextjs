@@ -41,16 +41,9 @@ const Edit = () => {
 		<section className='w-full p-3 space-y-4 bg-white'>
 			<div className='flex justify-between pr-12'>
 				<Button
-					leftSection={
-						<IconArrowNarrowLeft
-							size={25}
-							onClick={() => {
-								router.back();
-							}}
-						/>
-					}
+					leftSection={<IconArrowNarrowLeft size={25} />}
 					onClick={() => {
-						router.back();
+						router.push("/ms/settings");
 					}}
 				>
 					Go back
@@ -108,7 +101,7 @@ const Edit = () => {
 					<Button
 						color='black'
 						onClick={() => {
-							router.back();
+							router.push("/ms/settings");
 						}}
 					>
 						Cancel

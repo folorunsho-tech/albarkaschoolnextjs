@@ -1,7 +1,14 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 import { useEffect, useRef, useState } from "react";
-import { Combobox, Loader, TextInput, useCombobox } from "@mantine/core";
+import {
+	Combobox,
+	Loader,
+	NumberFormatter,
+	Table,
+	TextInput,
+	useCombobox,
+} from "@mantine/core";
 import axios from "@/config/axios";
 
 function getAsyncData(searchQuery: string, signal: AbortSignal) {
@@ -11,7 +18,7 @@ function getAsyncData(searchQuery: string, signal: AbortSignal) {
 		});
 		if (searchQuery !== "") {
 			axios
-				.post("/students/search", { value: searchQuery })
+				.post("/transactions/byStudent", { value: searchQuery })
 				.then((result: any) => {
 					resolve(result.data);
 				});
@@ -21,11 +28,11 @@ function getAsyncData(searchQuery: string, signal: AbortSignal) {
 	});
 }
 
-export default function StudentSearch({
-	setStudent,
+export default function TnxSearch({
+	setTnx,
 	cleared = false,
 }: {
-	setStudent: any;
+	setTnx: any;
 	cleared?: boolean;
 }) {
 	const combobox = useCombobox({
@@ -36,7 +43,7 @@ export default function StudentSearch({
 	const [data, setData] = useState<any[] | null>(null);
 	const [value, setValue] = useState("");
 	const [empty, setEmpty] = useState(false);
-	const abortController = useRef<AbortController | any>(null);
+	const abortController = useRef<AbortController | undefined>(null);
 
 	const fetchOptions = (query: string) => {
 		abortController.current?.abort();
@@ -54,16 +61,65 @@ export default function StudentSearch({
 	};
 
 	const options = (data || []).map((item) => (
-		<Combobox.Option
-			value={`${item?.admission_no} - ${item?.last_name} ${item?.first_name}`}
-			key={item?.id}
-		>
-			{item?.admission_no} - {item?.last_name} {item?.first_name}
+		<Combobox.Option value={item?.id} key={item?.id}>
+			<div className='p-1 rounded text-xs' key={item?.id}>
+				<h3 className='text-xs font-semibold'>
+					<span>Tnx Id: {item?.id}</span> /{" "}
+					<span>
+						Update Date: {new Date(item?.updatedAt).toLocaleDateString()}
+					</span>{" "}
+					/ <span>Year: {item?.year}</span> / <span>Month: {item?.month}</span>{" "}
+					/{" "}
+					<span>
+						Balance: <NumberFormatter value={item?.balance} />
+					</span>{" "}
+					/{" "}
+					<span>
+						Total: <NumberFormatter value={item?.total} />
+					</span>
+				</h3>
+				<p>Items:</p>
+				<Table>
+					<Table.Thead className='text-xs'>
+						<Table.Tr>
+							<Table.Th>S/N</Table.Th>
+							<Table.Th>Fee</Table.Th>
+							<Table.Th>Amount</Table.Th>
+							<Table.Th>Paid</Table.Th>
+							<Table.Th>Balance</Table.Th>
+						</Table.Tr>
+					</Table.Thead>
+					<Table.Tbody>
+						{item?.items?.map(
+							(
+								tnxItem: {
+									id: string;
+									paid: number;
+									price: number;
+									balance: number;
+									fee: {
+										name: string;
+									};
+								},
+								i: number
+							) => (
+								<Table.Tr key={tnxItem.id} className='text-xs'>
+									<Table.Td>{i + 1}</Table.Td>
+									<Table.Td>{tnxItem.fee.name}</Table.Td>
+									<Table.Td>{tnxItem.price}</Table.Td>
+									<Table.Td>{tnxItem.paid}</Table.Td>
+									<Table.Td>{tnxItem.balance}</Table.Td>
+								</Table.Tr>
+							)
+						)}
+					</Table.Tbody>
+				</Table>
+			</div>
 		</Combobox.Option>
 	));
 	useEffect(() => {
-		if (value == "" || cleared) {
-			setStudent(null);
+		if (value == "") {
+			setTnx(null);
 		}
 	}, [value]);
 	useEffect(() => {
@@ -74,10 +130,9 @@ export default function StudentSearch({
 	return (
 		<Combobox
 			onOptionSubmit={(optionValue) => {
-				const f = optionValue.split("-")[0].split("-")[0].trim();
-				setValue(optionValue);
-
-				setStudent(data?.find((student: any) => student?.admission_no == f));
+				const found = data?.find((tnx: any) => tnx?.id == optionValue);
+				setValue(found?.student?.admission_no);
+				setTnx(found);
 				combobox.closeDropdown();
 			}}
 			withinPortal={false}
@@ -85,12 +140,12 @@ export default function StudentSearch({
 		>
 			<Combobox.Target>
 				<TextInput
-					label='Student admission no / name'
-					placeholder='Search by admission no / name '
-					value={value}
+					label='Search for outstanding tnx by Adm No'
+					placeholder='Search by Adm No'
+					value={value ?? ""}
 					onChange={(event) => {
 						setValue(event.currentTarget.value);
-						fetchOptions(event.currentTarget.value);
+						fetchOptions(String(event.currentTarget.value).trim());
 						combobox.resetSelectedOption();
 						combobox.openDropdown();
 					}}
@@ -107,7 +162,11 @@ export default function StudentSearch({
 				/>
 			</Combobox.Target>
 
-			<Combobox.Dropdown hidden={data === null}>
+			<Combobox.Dropdown
+				hidden={data === null}
+				mah={400}
+				style={{ overflowY: "auto" }}
+			>
 				<Combobox.Options>
 					{options}
 					{empty && <Combobox.Empty>No results found</Combobox.Empty>}

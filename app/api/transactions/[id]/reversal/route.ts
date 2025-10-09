@@ -1,15 +1,10 @@
 import { nanoid } from "nanoid";
 import prisma from "@/config/prisma";
-import { Rgenerator } from "@/libs/tnxIdGen";
 import { curMonth, curYear } from "@/libs/ynm";
 
 export async function POST(
 	request: Request,
-	{
-		params,
-	}: {
-		params: Promise<{ id: string }>;
-	}
+	{ params }: { params: Promise<{ id: string }> }
 ) {
 	const id = (await params).id.substring(0, 7);
 	// Parse the request body

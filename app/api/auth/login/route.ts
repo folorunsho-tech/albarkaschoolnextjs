@@ -21,14 +21,14 @@ export async function POST(request: NextRequest) {
 			);
 		} else {
 			const token = await generateToken({
-				userId: user?.id,
+				id: user?.id,
 				menu: user?.permissions,
 				role: user?.role,
 				active: user?.active,
 				username: user?.username,
 			});
 			const res = NextResponse.json({
-				userId: user?.id,
+				id: user?.id,
 				menu: user?.permissions,
 				role: user?.role,
 				active: user?.active,

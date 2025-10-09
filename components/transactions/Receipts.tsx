@@ -67,7 +67,7 @@ const Receipts = ({ id }: { id: string }) => {
 
 	useEffect(() => {
 		async function getAll() {
-			const { data } = await fetch(`/transactions/reciepts/${id}`);
+			const { data } = await fetch(`/transactions/${id}/reciepts`);
 			setQueryData(data);
 		}
 		getAll();
@@ -84,7 +84,7 @@ const Receipts = ({ id }: { id: string }) => {
 					<div ref={contentRef} className='printable text-sm'>
 						<div className='flex items-start gap-4 mb-1'>
 							<Image
-								src='/logo.png'
+								src='/logo.svg'
 								height={100}
 								width={100}
 								alt='Albarka logo'
@@ -92,15 +92,11 @@ const Receipts = ({ id }: { id: string }) => {
 							/>
 							<div className='space-y-1 w-full'>
 								<div className='flex items-center w-full justify-between'>
-									<h2 className='text-xl font-extrabold font-serif '>
-										AL-BARKA SCHOOL, WAWA
-									</h2>
-									<p>{format(new Date(), "PPPpp")}</p>
+									<h2 className='font-extrabold font-serif '>ALBARKA SCHOOL</h2>
+									<p>{format(new Date(), "Pp")}</p>
 								</div>
-								<h3 className='text-lg '>Rofia Road, Wawa, Niger State</h3>
-								<p className='text-md  italic'>
-									E-mail: albarkaschool@yahoo.com
-								</p>
+								<h3 className=''>Rofia Road, Wawa, Niger State</h3>
+								<p className=' italic'>E-mail: albarkaschool@yahoo.com</p>
 							</div>
 						</div>
 						<div className='flex flex-wrap gap-2 mb-1'>
@@ -159,45 +155,38 @@ const Receipts = ({ id }: { id: string }) => {
 						<Table>
 							<Table.Thead>
 								<Table.Tr>
-									<Table.Th>S/N</Table.Th>
-									<Table.Th>Name</Table.Th>
+									<Table.Th>Item</Table.Th>
 									<Table.Th>Amount</Table.Th>
 									<Table.Th>Paid</Table.Th>
-
-									<Table.Th>Method</Table.Th>
 								</Table.Tr>
 							</Table.Thead>
 							<Table.Tbody>
 								{items?.map((item: any, i: number) => (
 									<Table.Tr key={i + 1}>
-										<Table.Td>{i + 1}</Table.Td>
 										<Table.Td>{item?.name}</Table.Td>
 										<Table.Td>
 											<NumberFormatter
-												prefix='NGN '
+												prefix='N '
 												value={Number(item?.price)}
 												thousandSeparator
 											/>
 										</Table.Td>
 										<Table.Td>
 											<NumberFormatter
-												prefix='NGN '
+												prefix='N '
 												value={Number(item?.paid)}
 												thousandSeparator
 											/>
 										</Table.Td>
-
-										<Table.Td>{item?.method}</Table.Td>
 									</Table.Tr>
 								))}
 							</Table.Tbody>
 							<Table.Tfoot className='font-semibold border bg-gray-200'>
 								<Table.Tr>
-									<Table.Td></Table.Td>
 									<Table.Td>Total: </Table.Td>
 									<Table.Td>
 										<NumberFormatter
-											prefix='NGN '
+											prefix='N '
 											value={items?.reduce(
 												(prev: any, curr: { paid: number }) => {
 													return Number(prev) + Number(curr.paid);
@@ -209,7 +198,7 @@ const Receipts = ({ id }: { id: string }) => {
 									</Table.Td>
 									<Table.Td>
 										<NumberFormatter
-											prefix='NGN '
+											prefix='N '
 											value={items?.reduce(
 												(prev: any, curr: { price: number }) => {
 													return prev + curr.price;

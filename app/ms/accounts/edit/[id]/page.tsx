@@ -79,7 +79,6 @@ const Edit = () => {
 	useEffect(() => {
 		const getAll = async () => {
 			const { data } = await fetch(`/accounts/${id}`);
-			console.log(data);
 			setUsername(data?.username);
 			setPassword(data?.password);
 			setRole(data?.role);
@@ -116,16 +115,9 @@ const Edit = () => {
 		<section className='flex flex-col gap-4 relative p-3 bg-white'>
 			<div className='flex gap-10 items-center'>
 				<Button
-					leftSection={
-						<IconArrowNarrowLeft
-							size={25}
-							onClick={() => {
-								router.back();
-							}}
-						/>
-					}
+					leftSection={<IconArrowNarrowLeft size={25} />}
 					onClick={() => {
-						router.back();
+						router.push("/ms/accounts");
 					}}
 				>
 					Go back
@@ -334,30 +326,30 @@ const Edit = () => {
 									</span>
 								</div>
 
-								{/* <div className='space-y-2'>
+								<div className='space-y-2'>
 									<span className='flex gap-2'>
 										<Checkbox
 											checked={
-												payments.view && payments.create && payments.edit
+												payments?.view && payments?.create && payments?.edit
 											}
 											onChange={() => {
 												setPayments({
-													view: !payments.view,
-													create: !payments.create,
-													edit: !payments.edit,
+													view: !payments?.view,
+													create: !payments?.create,
+													edit: !payments?.edit,
 												});
 											}}
 										/>
-										<h3 className='text-sm font-semibold'>Payments</h3>
+										<h3 className='text-sm font-semibold'>Transactions</h3>
 									</span>
 
 									<span className='flex gap-2 ml-4'>
 										<Checkbox
-											checked={payments.create}
+											checked={payments?.create}
 											onChange={() =>
 												setPayments((prev) => ({
 													...prev,
-													create: !prev.create,
+													create: !prev?.create,
 												}))
 											}
 										/>
@@ -365,14 +357,14 @@ const Edit = () => {
 									</span>
 									<span className='flex gap-2 ml-4'>
 										<Checkbox
-											checked={payments.edit}
+											checked={payments?.edit}
 											onChange={() =>
-												setPayments((prev) => ({ ...prev, edit: !prev.edit }))
+												setPayments((prev) => ({ ...prev, edit: !prev?.edit }))
 											}
 										/>
 										<h3 className='text-sm font-semibold'>Edit</h3>
 									</span>
-								</div> */}
+								</div>
 							</div>
 						</section>
 					</section>
@@ -380,7 +372,7 @@ const Edit = () => {
 				<div className='flex items-center gap-6 mt-5 '>
 					<Button
 						onClick={() => {
-							router.back();
+							router.push("/ms/accounts");
 						}}
 						color='black'
 					>

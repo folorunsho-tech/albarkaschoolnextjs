@@ -2,11 +2,7 @@ import prisma from "@/config/prisma";
 
 export async function GET(
 	request: Request,
-	{
-		params,
-	}: {
-		params: Promise<{ id: string }>;
-	}
+	{ params }: { params: Promise<{ id: string }> }
 ) {
 	const id = (await params).id.substring(0, 7);
 	try {

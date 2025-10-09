@@ -37,7 +37,7 @@ const Reciept = ({
 			</Button>
 			<section style={{ display: "none" }}>
 				<div
-					className='border border-black max-w-[40rem] p-2 m-2'
+					className='border border-black max-w-[40rem] p-2 m-2 text-xs'
 					ref={contentRef}
 				>
 					<div>
@@ -49,51 +49,45 @@ const Reciept = ({
 					<div className='border-y-2 flex flex-wrap gap-2 w-full py-2'>
 						<Text fw={600}>
 							FULL NAME:
-							<i className='text-sm font-normal pl-2'>
+							<i className=' pl-2'>
 								{queryData?.student?.last_name} {queryData?.student?.first_name}
 							</i>
 						</Text>
 						<Text fw={600}>
 							GUARDIAN NAME:
-							<i className='text-sm font-normal pl-2'>
-								{queryData?.student?.guardian_name}
-							</i>
+							<i className=' pl-2'>{queryData?.student?.guardian_name}</i>
 						</Text>
 						<Text fw={600}>
 							ADMISSION NO:
-							<i className='text-sm font-normal pl-2'>
-								{queryData?.student?.admission_no}
-							</i>
+							<i className=' pl-2'>{queryData?.student?.admission_no}</i>
 						</Text>
 						<Text fw={600}>
 							CLASS:
-							<i className='text-sm font-normal pl-2'>{queryData?.class}</i>
+							<i className=' pl-2'>{queryData?.class}</i>
 						</Text>
 						<Text fw={600}>
 							SESSION:
-							<i className='text-sm font-normal pl-2'>{queryData?.session}</i>
+							<i className=' pl-2'>{queryData?.session}</i>
 						</Text>
 						<Text fw={600}>
 							TERM:
-							<i className='text-sm font-normal pl-2'>{queryData?.term}</i>
+							<i className=' pl-2'>{queryData?.term}</i>
 						</Text>
 					</div>
 					<div className='border-y-2 flex flex-wrap gap-2 w-full py-2'>
 						<Text fw={600}>
 							DATE OF PAYMENT:
-							<i className='text-sm font-normal pl-2'>
+							<i className=' pl-2'>
 								{new Date(queryData?.createdAt).toDateString()}
 							</i>
 						</Text>
 						<Text fw={600}>
 							RECIEPT NO:
-							<i className='text-sm font-normal pl-2'>{queryData?.tnxId}</i>
+							<i className=' pl-2'>{queryData?.tnxId}</i>
 						</Text>
 						<Text fw={600}>
 							CASHIER:
-							<i className='text-sm font-normal pl-2 underline'>
-								{queryData?.createdBy?.name}
-							</i>
+							<i className=' pl-2 underline'>{queryData?.createdBy?.name}</i>
 						</Text>
 					</div>
 					<table className='recieptable'>
@@ -113,7 +107,7 @@ const Reciept = ({
 										{showAmnt && (
 											<td>
 												<NumberFormatter
-													prefix='NGN '
+													prefix=' '
 													value={item?.amount}
 													thousandSeparator
 												/>
@@ -121,7 +115,7 @@ const Reciept = ({
 										)}
 										<td>
 											<NumberFormatter
-												prefix='NGN '
+												prefix=' '
 												value={item?.paid}
 												thousandSeparator
 											/>
@@ -136,7 +130,7 @@ const Reciept = ({
 								{showAmnt && (
 									<td className='font-bold'>
 										<NumberFormatter
-											prefix='NGN '
+											prefix=' '
 											value={total}
 											thousandSeparator
 										/>
@@ -144,7 +138,7 @@ const Reciept = ({
 								)}
 								<td className='font-bold'>
 									<NumberFormatter
-										prefix='NGN '
+										prefix=' '
 										value={totalPaid}
 										thousandSeparator
 									/>
@@ -155,9 +149,9 @@ const Reciept = ({
 					<div className='flex justify-between items-center px-2 py-2'>
 						<Text fw={600}>
 							Total amount paid:
-							<b className='text-sm pl-2'>
+							<b className='pl-2'>
 								<NumberFormatter
-									prefix='NGN '
+									prefix='N '
 									value={queryData?.paid}
 									thousandSeparator
 								/>
@@ -165,7 +159,7 @@ const Reciept = ({
 						</Text>
 						<Text fw={600}>
 							Total amount paid in words:
-							<i className='text-sm pl-2 capitalize'>
+							<i className='pl-2 capitalize'>
 								{convert(Number(queryData?.paid))} Naira
 							</i>
 						</Text>

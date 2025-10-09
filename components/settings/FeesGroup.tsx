@@ -37,7 +37,7 @@ const Subjects = () => {
 			<Table.Td>{row?.classes?.map((cl: any) => `${cl?.name}, `)}</Table.Td>
 
 			<Table.Td className='flex items-center gap-3 '>
-				<Link href={`settings/fees?id=${row?.id}`}>
+				<Link href={`settings/fees/${row?.id}`}>
 					<ActionIcon variant='outline' color='green' aria-label='action menu'>
 						<IconPencil style={{ width: "70%", height: "70%" }} stroke={2} />
 					</ActionIcon>
@@ -87,7 +87,7 @@ const Subjects = () => {
 			>
 				<form
 					onSubmit={handleSubmit(async (values) => {
-						await post("/feesgroup/create", {
+						await post("/feesgroup", {
 							name: values.name,
 							amount: values.amount,
 							classes: classes?.map((cl: any) => {

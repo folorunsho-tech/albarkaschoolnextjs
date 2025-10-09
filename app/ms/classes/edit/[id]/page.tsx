@@ -69,16 +69,9 @@ const EditClass = () => {
 	return (
 		<section className='space-y-6 bg-white py-3 px-6'>
 			<Button
-				leftSection={
-					<IconArrowNarrowLeft
-						size={25}
-						onClick={() => {
-							router.back();
-						}}
-					/>
-				}
+				leftSection={<IconArrowNarrowLeft size={25} />}
 				onClick={() => {
-					router.back();
+					router.push("/ms/classes");
 				}}
 			>
 				Go back
@@ -115,7 +108,7 @@ const EditClass = () => {
 				<Group>
 					<Button
 						onClick={() => {
-							router.back();
+							router.push("/ms/classes");
 						}}
 					>
 						Cancel

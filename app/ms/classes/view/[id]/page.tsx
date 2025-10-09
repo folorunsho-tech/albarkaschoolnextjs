@@ -87,16 +87,9 @@ const ViewClass = () => {
 		<section className='relative flex flex-col '>
 			<div className='flex justify-between p-3'>
 				<Button
-					leftSection={
-						<IconArrowNarrowLeft
-							size={25}
-							onClick={() => {
-								router.back();
-							}}
-						/>
-					}
+					leftSection={<IconArrowNarrowLeft size={25} />}
 					onClick={() => {
-						router.back();
+						router.push("/ms/classes");
 					}}
 				>
 					Go back
